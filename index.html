@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#1d2523">
-  <title>Free Online Number Guessing Game | Number Picker</title>
-  <meta name="description" content="Play a free, interactive number guessing game with three difficulty levels, warmer-or-colder hints, and a running score. No account or download needed.">
+  <title>The Suspiciously Random Arcade | Free Browser Games</title>
+  <meta name="description" content="Play free browser games at The Suspiciously Random Arcade: guess a secret number or challenge the house to Rock, Paper, Scissors.">
   <meta name="robots" content="index, follow">
   <meta name="google-site-verification" content="Wzs1N5PxAeg9PaHwLsvG7lvBRpHIcPszBoQxDwpnPnQ">
   <link rel="canonical" href="https://tgood0308-stack.github.io/random-number-picker-game/">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Free Online Number Guessing Game | Number Picker">
-  <meta property="og:description" content="Pick a difficulty, chase a secret number, and see how high your score can go. Free to play in your browser.">
+  <meta property="og:title" content="The Suspiciously Random Arcade | Free Browser Games">
+  <meta property="og:description" content="Guess a secret number or challenge the house to Rock, Paper, Scissors. Free games, questionable confidence.">
   <meta property="og:url" content="https://tgood0308-stack.github.io/random-number-picker-game/">
   <meta name="twitter:card" content="summary">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -168,6 +168,22 @@
 
     .setup-copy { max-width: 540px; margin-bottom: 20px; color: #535c56; line-height: 1.5; }
     .field-label { display: block; margin-bottom: 7px; }
+
+    .game-chooser { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0 0 18px; }
+    .game-option {
+      min-height: 76px;
+      padding: 11px 12px;
+      border: 2px solid var(--ink);
+      border-radius: 4px;
+      background: var(--white);
+      text-align: left;
+      cursor: pointer;
+      transition: background-color 130ms ease, transform 130ms ease;
+    }
+    .game-option:hover { transform: translateY(-2px); }
+    .game-option[aria-pressed="true"] { background: var(--acid); }
+    .game-option strong { display: block; margin-bottom: 3px; font-size: 15px; }
+    .game-option span { color: #535c56; font-family: var(--mono); font-size: 10px; text-transform: uppercase; }
 
     .name-input, .guess-input {
       width: 100%;
@@ -354,6 +370,20 @@
 
     .round-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 16px; }
 
+    .duel-board { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; margin: 22px 0; }
+    .duel-side { min-width: 0; padding: 14px 8px; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); text-align: center; }
+    .duel-side span { display: block; margin-bottom: 5px; color: var(--muted); font-family: var(--mono); font-size: 10px; text-transform: uppercase; }
+    .duel-side strong { display: block; overflow-wrap: anywhere; font-family: var(--display); font-size: 20px; font-weight: 400; }
+    .versus { color: #a94a38; font-family: var(--display); font-size: 14px; }
+    .choice-buttons { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .choice-button { min-height: 48px; border: 2px solid var(--ink); border-radius: 4px; background: var(--acid); font-weight: 700; cursor: pointer; }
+    .choice-button:hover { transform: translateY(-2px); box-shadow: 0 3px 0 var(--ink); }
+    .choice-button:disabled { transform: none; box-shadow: none; }
+
+    .share-button { min-height: 32px; padding: 5px 8px; border: 1px solid var(--ink); border-radius: 3px; background: transparent; font-family: var(--mono); font-size: 10px; text-transform: uppercase; cursor: pointer; }
+    .share-button:hover { background: var(--acid); }
+    .share-status { min-width: 100px; }
+
     .side-rail {
       padding: 20px 18px;
       background: var(--ink);
@@ -430,6 +460,8 @@
       .stat-value { font-size: 15px; }
       .setup-panel { padding: 18px 15px; }
       .setup-panel h2 { font-size: 23px; }
+      .game-chooser { grid-template-columns: minmax(0, 1fr); }
+      .game-option { min-height: 62px; }
       .level-option { min-height: 74px; padding: 8px 7px; }
       .level-options { grid-template-columns: minmax(0, 1fr); }
       .level-option {
@@ -467,12 +499,14 @@
       .topbar { gap: 7px; font-size: 9px; }
       .brand { gap: 5px; }
       .brand-mark { width: 20px; height: 20px; }
-      .title-row { align-items: flex-start; }
+      .title-row { align-items: stretch; flex-direction: column; gap: 5px; }
       h1 { font-size: 24px; }
-      .title-stamp { width: 48px; height: 48px; margin-top: 18px; }
+      .title-stamp { align-self: flex-end; width: 48px; height: 48px; margin-top: 0; transform: none; }
       .title-stamp svg { width: 36px; height: 36px; }
       .score-cell { padding-right: 4px; }
       .arcade-note { font-size: 8px; }
+      .choice-buttons { gap: 4px; }
+      .choice-button { padding-right: 3px; padding-left: 3px; font-size: 12px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -497,15 +531,15 @@
     <main>
       <section class="title-row" aria-labelledby="gameTitle">
         <div>
-          <p class="eyebrow">A game of nerve, math, and deeply questionable confidence</p>
-          <h1 id="gameTitle">THE RANDOM <span>FUCKING NUMBER PICKER</span></h1>
+          <p class="eyebrow">Two quick games. One suspiciously confident arcade.</p>
+          <h1 id="gameTitle">THE <span>SUSPICIOUSLY RANDOM ARCADE</span></h1>
         </div>
         <div class="title-stamp" aria-hidden="true">
           <svg viewBox="0 0 80 80">
             <circle cx="40" cy="40" r="34" fill="none" stroke="#1d2523" stroke-width="3" />
             <circle cx="40" cy="40" r="25" fill="none" stroke="#1d2523" stroke-width="2" stroke-dasharray="3 4" />
             <path d="M40 12v10M68 40H58M40 68V58M12 40h10" stroke="#1d2523" stroke-width="3" />
-            <text x="40" y="46" text-anchor="middle" font-family="DM Mono, monospace" font-size="15" font-weight="700" fill="#1d2523">RNG</text>
+            <text x="40" y="46" text-anchor="middle" font-family="DM Mono, monospace" font-size="15" font-weight="700" fill="#1d2523">PLAY</text>
           </svg>
         </div>
       </section>
@@ -519,13 +553,23 @@
       <section class="welcome-layout" id="welcomeView" aria-labelledby="welcomeHeading">
         <form class="setup-panel" id="setupForm">
           <span class="section-tag">Insert confidence</span>
-          <h2 id="welcomeHeading">Wassup, number hunter.</h2>
-          <p class="setup-copy">You came here for a ridiculous game, right? Pick a level, enter a name, and prepare to negotiate with a random number.</p>
+          <h2 id="welcomeHeading">Choose your chaos.</h2>
+          <p class="setup-copy" id="setupCopy">Pick a game, give us your call sign, and see if luck has the day off.</p>
 
           <label class="field-label" for="playerName">Your call sign</label>
           <input class="name-input" id="playerName" name="playerName" maxlength="24" autocomplete="nickname" placeholder="Mystery Legend">
 
-          <fieldset class="level-group">
+          <span class="field-label">Pick a game</span>
+          <div class="game-chooser" id="gameChooser" role="group" aria-label="Pick a game">
+            <button class="game-option" type="button" data-game="number" aria-pressed="true">
+              <strong>Number Guessing</strong><span>Find the hidden number</span>
+            </button>
+            <button class="game-option" type="button" data-game="rps" aria-pressed="false">
+              <strong>Rock, Paper, Scissors</strong><span>Challenge the arcade</span>
+            </button>
+          </div>
+
+          <fieldset class="level-group" id="difficultyGroup">
             <legend class="field-label">Choose your chaos level</legend>
             <div class="level-options" id="introLevels" role="radiogroup" aria-label="Choose difficulty">
               <button class="level-option" type="button" data-difficulty="easy" aria-pressed="false">
@@ -540,19 +584,19 @@
             </div>
           </fieldset>
 
-          <button class="primary-button" type="submit">Yes, let's play</button>
+          <button class="primary-button" id="startButton" type="submit">Start number hunt</button>
         </form>
 
         <aside class="manifesto" aria-label="Game rules">
           <div>
             <span class="section-tag">House rules</span>
-            <h3>One number.<br>Many bad guesses.</h3>
-            <p>The machine picks a secret number. You get clues, a limited number of tries, and absolutely no dignity insurance.</p>
+            <h3>Small games.<br>Unreasonable confidence.</h3>
+            <p>Guess a secret number or challenge the house to Rock, Paper, Scissors. Your score follows you around the arcade.</p>
           </div>
           <ul class="rule-list">
-            <li><b>01</b><span>Guess inside the range.</span></li>
-            <li><b>02</b><span>Read the high / low clues.</span></li>
-            <li><b>03</b><span>Get closer for more points.</span></li>
+            <li><b>01</b><span>Choose your game.</span></li>
+            <li><b>02</b><span>Outguess or outplay the house.</span></li>
+            <li><b>03</b><span>Build your session score.</span></li>
           </ul>
           <p class="arcade-note">NO DOWNLOADS / NO ACCOUNT / JUST NUMBERS</p>
         </aside>
@@ -629,9 +673,58 @@
           </aside>
         </div>
       </section>
+
+      <section id="rpsView" hidden aria-labelledby="rpsHeading">
+        <div class="game-toolbar">
+          <p><span class="level-badge">ARCADE MODE</span> &nbsp; Best of your own streak</p>
+          <p>Throw <strong id="rpsRoundNumber">0</strong></p>
+        </div>
+        <div class="game-frame">
+          <section class="playfield">
+            <div class="playfield-header">
+              <h2 id="rpsHeading">Rock, Paper, Scissors.</h2>
+              <span id="rpsGreeting">Pick your move</span>
+            </div>
+
+            <div class="duel-board" aria-live="polite">
+              <div class="duel-side"><span>You</span><strong id="playerMove">Ready?</strong></div>
+              <span class="versus">VS</span>
+              <div class="duel-side"><span>The arcade</span><strong id="arcadeMove">Ready?</strong></div>
+            </div>
+
+            <p class="feedback" id="rpsFeedback" data-tone="neutral" role="status" aria-live="polite">Choose rock, paper, or scissors to throw the first move.</p>
+
+            <div class="choice-buttons" role="group" aria-label="Choose your move">
+              <button class="choice-button" type="button" data-choice="rock">Rock</button>
+              <button class="choice-button" type="button" data-choice="paper">Paper</button>
+              <button class="choice-button" type="button" data-choice="scissors">Scissors</button>
+            </div>
+
+            <div class="round-actions">
+              <button class="quiet-button" id="rpsBackButton" type="button">Back to arcade</button>
+            </div>
+          </section>
+
+          <aside class="side-rail" aria-label="Rock, Paper, Scissors score">
+            <h3>Head-to-head</h3>
+            <dl class="side-stats">
+              <div><dt>Your wins</dt><dd id="rpsPlayerWins">0</dd></div>
+              <div><dt>House wins</dt><dd id="rpsHouseWins">0</dd></div>
+              <div><dt>Draws</dt><dd id="rpsDraws">0</dd></div>
+              <div><dt>Arcade points</dt><dd id="rpsScore">0</dd></div>
+            </dl>
+            <div class="history-heading"><h3>Rules</h3></div>
+            <ul class="rule-list">
+              <li><b>01</b><span>Rock beats scissors.</span></li>
+              <li><b>02</b><span>Scissors beat paper.</span></li>
+              <li><b>03</b><span>Paper beats rock.</span></li>
+            </ul>
+          </aside>
+        </div>
+      </section>
     </main>
 
-    <footer class="footer-line"><span>Randomness with attitude</span><span>Built for questionable confidence</span><span>Created by Terrance Good</span></footer>
+    <footer class="footer-line"><span>Randomness with attitude</span><span>Created by Terrance Good</span><span class="share-status" id="shareStatus" role="status" aria-live="polite">Send a friend a challenge.</span><button class="share-button" id="shareButton" type="button">Share arcade</button></footer>
   </div>
 
   <dialog class="difficulty-dialog" id="difficultyDialog" aria-labelledby="dialogHeading">
@@ -672,10 +765,18 @@
       "The number says: nice try, you magnificent chaos machine.",
     ];
 
+    const RPS_CHOICES = ["rock", "paper", "scissors"];
+    const RPS_BEATS = { rock: "scissors", paper: "rock", scissors: "paper" };
+    const ARCADE_URL = "https://tgood0308-stack.github.io/random-number-picker-game/";
+
     const elements = {
       welcomeView: document.querySelector("#welcomeView"),
       gameView: document.querySelector("#gameView"),
+      rpsView: document.querySelector("#rpsView"),
       setupForm: document.querySelector("#setupForm"),
+      difficultyGroup: document.querySelector("#difficultyGroup"),
+      setupCopy: document.querySelector("#setupCopy"),
+      startButton: document.querySelector("#startButton"),
       playerName: document.querySelector("#playerName"),
       guessForm: document.querySelector("#guessForm"),
       guessInput: document.querySelector("#guessInput"),
@@ -694,10 +795,15 @@
       applyDifficultyButton: document.querySelector("#applyDifficultyButton"),
       guessHistory: document.querySelector("#guessHistory"),
       historyEmpty: document.querySelector("#historyEmpty"),
+      rpsFeedback: document.querySelector("#rpsFeedback"),
+      playerMove: document.querySelector("#playerMove"),
+      arcadeMove: document.querySelector("#arcadeMove"),
+      shareStatus: document.querySelector("#shareStatus"),
     };
 
     const state = {
       playerName: "Mystery Legend",
+      selectedGame: "number",
       selectedDifficulty: "medium",
       difficulty: "medium",
       secretNumber: null,
@@ -709,6 +815,10 @@
       score: 0,
       bestScore: readBestScore(),
       inRound: false,
+      rpsRound: 0,
+      rpsPlayerWins: 0,
+      rpsHouseWins: 0,
+      rpsDraws: 0,
     };
 
     function readBestScore() {
@@ -735,12 +845,26 @@
       });
     }
 
+    function selectGame(game) {
+      state.selectedGame = game;
+      document.querySelectorAll(".game-option").forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.game === game));
+      });
+      const numberGame = game === "number";
+      elements.difficultyGroup.hidden = !numberGame;
+      elements.setupCopy.textContent = numberGame
+        ? "Pick a level, enter your call sign, and see if luck has the day off."
+        : "Pick your call sign, then see whether rock, paper, or scissors can outsmart the arcade.";
+      elements.startButton.textContent = numberGame ? "Start number hunt" : "Challenge the arcade";
+    }
+
     function updateScoreboard() {
       document.querySelector("#scoreValue").textContent = state.score;
       document.querySelector("#winsValue").textContent = state.roundsWon;
       document.querySelector("#bestValue").textContent = state.bestScore;
       document.querySelector("#sideScore").textContent = state.score;
       document.querySelector("#roundValue").textContent = state.roundsPlayed;
+      document.querySelector("#rpsScore").textContent = state.score;
     }
 
     function updateAttempts() {
@@ -808,7 +932,68 @@
       setFeedback(`Enter a number from 1 to ${settings.highestNumber}. Make it count.`);
       elements.welcomeView.hidden = true;
       elements.gameView.hidden = false;
+      elements.rpsView.hidden = true;
       elements.guessInput.focus();
+    }
+
+    function startRpsGame() {
+      state.rpsRound = 0;
+      state.rpsPlayerWins = 0;
+      state.rpsHouseWins = 0;
+      state.rpsDraws = 0;
+      state.inRound = false;
+      elements.welcomeView.hidden = true;
+      elements.gameView.hidden = true;
+      elements.rpsView.hidden = false;
+      elements.playerMove.textContent = "Ready?";
+      elements.arcadeMove.textContent = "Ready?";
+      elements.rpsFeedback.textContent = `All right, ${state.playerName}. Pick your move.`;
+      elements.rpsFeedback.dataset.tone = "neutral";
+      document.querySelector("#rpsGreeting").textContent = `${state.playerName}'s turn`;
+      updateRpsScore();
+      updateScoreboard();
+      document.querySelector(".choice-button").focus();
+    }
+
+    function updateRpsScore() {
+      document.querySelector("#rpsRoundNumber").textContent = state.rpsRound;
+      document.querySelector("#rpsPlayerWins").textContent = state.rpsPlayerWins;
+      document.querySelector("#rpsHouseWins").textContent = state.rpsHouseWins;
+      document.querySelector("#rpsDraws").textContent = state.rpsDraws;
+      document.querySelector("#rpsScore").textContent = state.score;
+    }
+
+    function playRpsTurn(playerChoice) {
+      const arcadeChoice = RPS_CHOICES[Math.floor(Math.random() * RPS_CHOICES.length)];
+      const titleCase = (choice) => choice[0].toUpperCase() + choice.slice(1);
+      state.rpsRound += 1;
+      state.roundsPlayed += 1;
+      elements.playerMove.textContent = titleCase(playerChoice);
+      elements.arcadeMove.textContent = titleCase(arcadeChoice);
+
+      if (playerChoice === arcadeChoice) {
+        state.rpsDraws += 1;
+        state.score += 2;
+        elements.rpsFeedback.textContent = "It's a draw. The arcade demands a rematch. +2 points.";
+        elements.rpsFeedback.dataset.tone = "neutral";
+      } else if (RPS_BEATS[playerChoice] === arcadeChoice) {
+        state.rpsPlayerWins += 1;
+        state.roundsWon += 1;
+        state.score += 10;
+        elements.rpsFeedback.textContent = "You win! The arcade is pretending that was part of the plan. +10 points.";
+        elements.rpsFeedback.dataset.tone = "win";
+      } else {
+        state.rpsHouseWins += 1;
+        elements.rpsFeedback.textContent = "The arcade takes that one. Its victory speech is mercifully short.";
+        elements.rpsFeedback.dataset.tone = "wrong";
+      }
+
+      if (state.score > state.bestScore) {
+        state.bestScore = state.score;
+        saveBestScore();
+      }
+      updateRpsScore();
+      updateScoreboard();
     }
 
     function finishRound(won) {
@@ -886,19 +1071,39 @@
 
     function returnToTitle() {
       elements.gameView.hidden = true;
+      elements.rpsView.hidden = true;
       elements.welcomeView.hidden = false;
       updateScoreboard();
-      document.querySelector("#setupForm button[type='submit']").focus();
+      elements.startButton.focus();
+    }
+
+    async function shareArcade() {
+      try {
+        if (navigator.share) {
+          await navigator.share({ title: document.title, text: "Come play a round at The Suspiciously Random Arcade.", url: ARCADE_URL });
+          elements.shareStatus.textContent = "Challenge sent.";
+        } else {
+          await navigator.clipboard.writeText(ARCADE_URL);
+          elements.shareStatus.textContent = "Arcade link copied.";
+        }
+      } catch {
+        elements.shareStatus.textContent = "Copy the arcade link from your address bar.";
+      }
     }
 
     document.querySelectorAll(".level-option").forEach((button) => {
       button.addEventListener("click", () => selectDifficulty(button.dataset.difficulty));
     });
 
+    document.querySelectorAll(".game-option").forEach((button) => {
+      button.addEventListener("click", () => selectGame(button.dataset.game));
+    });
+
     elements.setupForm.addEventListener("submit", (event) => {
       event.preventDefault();
       state.playerName = elements.playerName.value.trim() || "Mystery Legend";
-      startRound();
+      if (state.selectedGame === "rps") startRpsGame();
+      else startRound();
     });
 
     elements.guessForm.addEventListener("submit", submitGuess);
@@ -910,6 +1115,11 @@
       elements.difficultyDialog.close();
       startRound();
     });
+    document.querySelectorAll(".choice-button").forEach((button) => {
+      button.addEventListener("click", () => playRpsTurn(button.dataset.choice));
+    });
+    document.querySelector("#rpsBackButton").addEventListener("click", returnToTitle);
+    document.querySelector("#shareButton").addEventListener("click", shareArcade);
 
     updateScoreboard();
   </script>
