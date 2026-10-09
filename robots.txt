@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://tgood0308-stack.github.io/random-number-picker-game/sitemap.xml
